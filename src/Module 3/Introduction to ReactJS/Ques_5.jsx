@@ -17,13 +17,20 @@ function Ques_5({ name, age }) {
     );
 }
 
-// Prop type validation
+// Prop type validation with additional checks
 Ques_5.propTypes = {
-    name: PropTypes.string,
-    age: PropTypes.number,
+    name: PropTypes.string.isRequired, // name must be a string
+    age: (props, propName, componentName) => {
+        if (props[propName] <= 0) {
+            return new Error(`${propName} in ${componentName} must be a positive number.`);
+        }
+        if (typeof props[propName] !== 'number') {
+            return new Error(`${propName} in ${componentName} must be a number.`);
+        }
+    }
 };
 
-// Default props to handle missing props
+// Default props for missing props
 Ques_5.defaultProps = {
     name: 'Unknown',
     age: 0,
