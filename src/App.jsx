@@ -1,11 +1,11 @@
 import './App.css'
-import Ques_3 from './Module 3/Introduction to ReactJS/Ques_3'; 
+import Ques_4 from './Module 3/Introduction to ReactJS/Ques_4'; 
 function App() {
 
   return (
     <div>
       {/* Rendering the Ques_2 component */}
-      <Ques_3 />
+      <Ques_4 />
     </div>
   );
 }
