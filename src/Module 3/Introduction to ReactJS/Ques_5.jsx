@@ -3,3 +3,17 @@
 
 // Step 1: Write your code within the file, by the name of component as Profile
 // Step 2: Update App.js to pass props to the Profile component
+
+import React from 'react';
+
+function Ques_5({ name, age }) {
+    return (
+        <div>
+            <h1>Profile</h1>
+            <p>Name: {name}</p>
+            <p>Age: {age}</p>
+        </div>
+    );
+}
+
+export default Ques_5;
