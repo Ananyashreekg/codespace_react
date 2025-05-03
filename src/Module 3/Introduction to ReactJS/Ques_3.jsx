@@ -3,11 +3,11 @@
 // Use this component in App.js
 import React from 'react';
 
-// Functional component that returns a welcoming message
-const Greeting = () => {
+// Functional component that accepts a 'message' prop
+const Greeting = ({ message }) => {
   return (
     <div>
-      <h1>Welcome to React!</h1> {/* The welcoming message */}
+      <h1>{message || 'Welcome to React!'}</h1> {/* Default message if no prop is passed */}
     </div>
   );
 };
