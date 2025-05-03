@@ -5,15 +5,22 @@
 // Step 2: Modify the App.js to use LoginMessage with a boolean prop
 
 import React from 'react';
+import PropTypes from 'prop-types';
 
-function Ques_6() {
-    const isLoggedIn = true; // Change to false to test the other case
+function Ques_6({ isLoggedIn }) {
+    if (typeof isLoggedIn !== 'boolean') {
+        return <h1>Error: Invalid prop type.</h1>;
+    }
 
     return (
-        <div>
+        <>
             {isLoggedIn ? <h1>Welcome back!</h1> : <h1>Please log in</h1>}
-        </div>
+        </>
     );
 }
+
+Ques_6.propTypes = {
+    isLoggedIn: PropTypes.bool.isRequired,
+};
 
 export default Ques_6;
