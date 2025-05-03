@@ -5,6 +5,7 @@
 // Step 2: Update App.js to pass props to the Profile component
 
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function Ques_5({ name, age }) {
     return (
@@ -15,5 +16,17 @@ function Ques_5({ name, age }) {
         </div>
     );
 }
+
+// Prop type validation
+Ques_5.propTypes = {
+    name: PropTypes.string,
+    age: PropTypes.number,
+};
+
+// Default props to handle missing props
+Ques_5.defaultProps = {
+    name: 'Unknown',
+    age: 0,
+};
 
 export default Ques_5;
