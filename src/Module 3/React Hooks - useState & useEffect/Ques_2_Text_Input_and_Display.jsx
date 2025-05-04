@@ -17,13 +17,7 @@ const Ques_2_Text_Input_and_Display = () => {
 
   return (
     <div>
-      <input 
-        type="text" 
-        value={inputText} 
-        onChange={handleInputChange} 
-        placeholder="Type something here..." 
-      />
-      <p>You typed: {inputText}</p>
+      <p>hgdhgjkdnkbk </p>
     </div>
   );
 };
