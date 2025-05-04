@@ -3,3 +3,29 @@
 
 // Steps:
 //     - Write your code within the file, by the name of component as Text_Input
+// Ques_2_Text_Input_and_Display
+import React, { useState } from 'react';
+
+const Ques_2_Text_Input_and_Display = () => {
+  // Initialize state for input text
+  const [inputText, setInputText] = useState('');
+
+  // Handler to update state on input change
+  const handleInputChange = (event) => {
+    setInputText(event.target.value);
+  };
+
+  return (
+    <div>
+      <input 
+        type="text" 
+        value={inputText} 
+        onChange={handleInputChange} 
+        placeholder="Type something here..." 
+      />
+      <p>You typed: {inputText}</p>
+    </div>
+  );
+};
+
+export default Ques_2_Text_Input_and_Display;
