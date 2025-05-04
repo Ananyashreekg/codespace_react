@@ -8,28 +8,55 @@
 //     - Write your code within the file, by the name of component as Toggle_Visibility
 import React, { useState } from 'react';
 
-// Functional component to toggle visibility of a message
-const Ques_3_Toggle_Visibility = () => {
-  // useState hook to track if the message is visible or not
+// Inline Error Boundary defined within the same file
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    // Update state so the next render shows fallback UI
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, info) {
+    // Optional: Log error info to an external service or console
+    console.error('Caught an error:', error, info);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <h2>Oops! Something went wrong.</h2>;
+    }
+
+    return this.props.children;
+  }
+}
+
+// The functional component to toggle message visibility
+const ToggleVisibilityComponent = () => {
   const [isVisible, setIsVisible] = useState(false);
 
-  // Function to toggle the state between true and false
   const toggleVisibility = () => {
     setIsVisible(prev => !prev);
   };
 
   return (
     <div style={{ textAlign: 'center', marginTop: '50px' }}>
-      {/* Button to trigger the toggle function */}
       <button onClick={toggleVisibility}>
         {isVisible ? 'Hide Message' : 'Show Message'}
       </button>
-
-      {/* Conditionally render the message if isVisible is true */}
       {isVisible && <p>This is the text message to toggle!</p>}
     </div>
   );
 };
 
-export default Ques_3_Toggle_Visibility;
+// Wrapping the toggle component with the error boundary inline
+const Ques_3_Toggle_Visibility = () => (
+  <ErrorBoundary>
+    <ToggleVisibilityComponent />
+  </ErrorBoundary>
+);
 
+export default Ques_3_Toggle_Visibility;
