@@ -4,9 +4,10 @@
 // Steps:
 //     - onSubmit: Calls handleSubmit , which prevents the default form submission action and shows an alert.
 //     - Write your code within the file, by the name of component as Simple_Form
+
 import React, { useState } from 'react';
 
-// ErrorBoundary defined inline
+// Error Boundary remains the same
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -14,13 +15,11 @@ class ErrorBoundary extends React.Component {
   }
 
   static getDerivedStateFromError(error) {
-    // Update state to show fallback UI
     return { hasError: true };
   }
 
   componentDidCatch(error, info) {
-    // Optional: log error to monitoring service
-    console.error("Error caught in ErrorBoundary:", error, info);
+    console.error('Error caught in ErrorBoundary:', error, info);
   }
 
   render() {
@@ -31,20 +30,31 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-// Form component
+// Form with inline error handling
 const SimpleForm = () => {
   const [name, setName] = useState('');
+  const [error, setError] = useState('');
+
+  const validateName = (input) => {
+    if (input.trim() === '') {
+      return 'Name field cannot be empty.';
+    } else if (input.length < 2) {
+      return 'Name must be at least 2 characters.';
+    }
+    return '';
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const validationError = validateName(name);
 
-    if (name.trim() === '') {
-      alert('Name field cannot be empty.');
-      return;
+    if (validationError) {
+      setError(validationError);
+    } else {
+      setError('');
+      alert(`Hello, ${name}!`);
+      setName('');
     }
-
-    alert(`Hello, ${name}!`);
-    setName(''); // Clear the input after submission
   };
 
   return (
@@ -54,24 +64,31 @@ const SimpleForm = () => {
           type="text"
           placeholder="Enter your name"
           value={name}
-          onChange={(e) => setName(e.target.value)}
-          style={{ padding: '8px', width: '200px', marginRight: '10px' }}
+          onChange={(e) => {
+            setName(e.target.value);
+            if (error) setError('');
+          }}
+          style={{
+            padding: '8px',
+            width: '200px',
+            marginRight: '10px',
+            borderColor: error ? 'red' : '#ccc',
+          }}
         />
         <button type="submit" style={{ padding: '8px 16px' }}>
           Submit
         </button>
+        {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
       </form>
     </div>
   );
 };
 
-// Main export with ErrorBoundary wrapped around form
-const Ques_4_Simple_Form = () => {
-  return (
-    <ErrorBoundary>
-      <SimpleForm />
-    </ErrorBoundary>
-  );
-};
+// Wrapped with ErrorBoundary
+const Ques_4_Simple_Form = () => (
+  <ErrorBoundary>
+    <SimpleForm />
+  </ErrorBoundary>
+);
 
 export default Ques_4_Simple_Form;
