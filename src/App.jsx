@@ -1,11 +1,10 @@
 import './App.css'
 import React from 'react';
-import Ques_6 from './Module 3/Introduction to ReactJS/Ques_6';
-
+import Ques_1_Counter from './Module 3/React Hooks - useState & useEffect/Ques_1_Counter';
+// /workspaces/codespace_react/src/Module 3/React Hooks - useState & useEffect
 function App() {
-    const isLoggedIn = true; // or false to test
-    return (
-        <Ques_6 isLoggedIn={isLoggedIn} />
+        return (
+        <Ques_1_Counter />
     );
 }
 
