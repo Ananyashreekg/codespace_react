@@ -4,7 +4,9 @@
 
 // Steps:
 //     - Write your code within the file, by the name of component as Complex_Form
+
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 // Registration Form Component
 const RegistrationForm = () => {
@@ -21,6 +23,9 @@ const RegistrationForm = () => {
   // State for handling error messages
   const [error, setError] = useState('');
 
+  // State for loading state during form submission
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   // Handle changes to input fields
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -35,22 +40,28 @@ const RegistrationForm = () => {
     e.preventDefault();
     const { username, email, password } = formData;
 
+    // Start loading
+    setIsSubmitting(true);
+
     // Check if all fields are filled
     if (!username || !email || !password) {
       setError('All fields are required!');
+      setIsSubmitting(false);
       return;
     }
 
-    // Validate email format
+    // Validate email format using regex
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(email)) {
       setError('Please enter a valid email address!');
+      setIsSubmitting(false);
       return;
     }
 
     // Validate password strength (at least 6 characters)
     if (password.length < 6) {
       setError('Password must be at least 6 characters long!');
+      setIsSubmitting(false);
       return;
     }
 
@@ -62,6 +73,9 @@ const RegistrationForm = () => {
       email: '',
       password: ''
     });
+
+    // Stop loading after successful form submission
+    setIsSubmitting(false);
   };
 
   return (
@@ -99,8 +113,8 @@ const RegistrationForm = () => {
         />
         <br />
         {/* Submit Button */}
-        <button type="submit" style={{ padding: '8px 16px' }}>
-          Register
+        <button type="submit" style={{ padding: '8px 16px' }} disabled={isSubmitting}>
+          {isSubmitting ? 'Submitting...' : 'Register'}
         </button>
       </form>
 
@@ -118,6 +132,18 @@ const RegistrationForm = () => {
       )}
     </div>
   );
+};
+
+// Adding PropTypes for better maintainability
+RegistrationForm.propTypes = {
+  formData: PropTypes.shape({
+    username: PropTypes.string,
+    email: PropTypes.string,
+    password: PropTypes.string
+  }),
+  submittedData: PropTypes.object,
+  error: PropTypes.string,
+  isSubmitting: PropTypes.bool
 };
 
 export default RegistrationForm;
