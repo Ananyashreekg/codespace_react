@@ -7,25 +7,30 @@
 import React, { useState } from 'react';
 
 const Ques_2_Text_Input_and_Display = () => {
-  // Initialize state for input text
   const [inputText, setInputText] = useState('');
 
-  // Handler to update state on input change
   const handleInputChange = (event) => {
     setInputText(event.target.value);
   };
 
+  const handleReset = () => {
+    setInputText('');
+  };
+
   return (
     <div>
-      <input 
-        type="text" 
-        value={inputText} 
-        onChange={handleInputChange} 
-        placeholder="Type something here..." 
+      <input
+        type="text"
+        value={inputText}
+        onChange={handleInputChange}
+        placeholder="Type something here..."
       />
       <p>You typed: {inputText}</p>
+      <p>Character Count: {inputText.length}</p>
+      <button onClick={handleReset}>Reset</button>
     </div>
   );
 };
 
 export default Ques_2_Text_Input_and_Display;
+
