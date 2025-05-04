@@ -29,39 +29,57 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-// Fetch Component
+// Fetch Component with Enhancements
 const FetchDataComponent = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
+  const [fetchAttempted, setFetchAttempted] = useState(false);
+
+  const fetchData = async () => {
+    try {
+      // Replace with your API endpoint
+      const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      setData(result.slice(0, 10)); // Limit to 10 items for display
+      setFetchAttempted(true);
+    } catch (error) {
+      setErrorMsg('Failed to fetch data. Please try again later.');
+      console.error('Fetch error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // You can replace this with any public API endpoint
-        const response = await fetch('https://jsonplaceholder.typicode.com/posts');
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const result = await response.json();
-        setData(result.slice(0, 10)); // Limit to 10 items for display
-      } catch (error) {
-        setErrorMsg('Failed to fetch data. Please try again later.');
-        console.error('Fetch error:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (!fetchAttempted) {
+      fetchData();
+    }
+  }, [fetchAttempted]);
 
-    fetchData();
-  }, []);
+  const handleRetry = () => {
+    setLoading(true);
+    setErrorMsg('');
+    setData([]);
+    setFetchAttempted(false);  // Trigger the fetch again
+  };
 
-  if (loading) {
+  if (loading && !errorMsg) {
     return <p style={{ textAlign: 'center', marginTop: '50px' }}>Loading...</p>;
   }
 
   if (errorMsg) {
-    return <p style={{ color: 'red', textAlign: 'center', marginTop: '50px' }}>{errorMsg}</p>;
+    return (
+      <div style={{ textAlign: 'center', marginTop: '50px' }}>
+        <p style={{ color: 'red' }}>{errorMsg}</p>
+        <button onClick={handleRetry} style={{ padding: '8px 16px', marginTop: '10px' }}>
+          Retry
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -78,7 +96,7 @@ const FetchDataComponent = () => {
   );
 };
 
-// Main export with ErrorBoundary
+// Main export wrapped with ErrorBoundary
 const Ques_6_Fetch_Data = () => (
   <ErrorBoundary>
     <FetchDataComponent />
