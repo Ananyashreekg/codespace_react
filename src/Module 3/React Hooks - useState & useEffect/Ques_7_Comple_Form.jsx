@@ -4,19 +4,24 @@
 
 // Steps:
 //     - Write your code within the file, by the name of component as Complex_Form
-
 import React, { useState } from 'react';
 
 // Registration Form Component
 const RegistrationForm = () => {
+  // State to hold form data
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: ''
   });
+
+  // State to hold the submitted data
   const [submittedData, setSubmittedData] = useState(null);
+
+  // State for handling error messages
   const [error, setError] = useState('');
 
+  // Handle changes to input fields
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -25,16 +30,31 @@ const RegistrationForm = () => {
     });
   };
 
+  // Form submit handler with validation checks
   const handleSubmit = (e) => {
     e.preventDefault();
     const { username, email, password } = formData;
 
+    // Check if all fields are filled
     if (!username || !email || !password) {
       setError('All fields are required!');
       return;
     }
 
-    // If all fields are filled, reset the error and store the data
+    // Validate email format
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+      setError('Please enter a valid email address!');
+      return;
+    }
+
+    // Validate password strength (at least 6 characters)
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long!');
+      return;
+    }
+
+    // If all validations pass, reset error and store the data
     setError('');
     setSubmittedData(formData);
     setFormData({
@@ -48,6 +68,7 @@ const RegistrationForm = () => {
     <div style={{ textAlign: 'center', marginTop: '50px' }}>
       <h2>Registration Form</h2>
       <form onSubmit={handleSubmit}>
+        {/* Username Input */}
         <input
           type="text"
           name="username"
@@ -57,6 +78,7 @@ const RegistrationForm = () => {
           style={{ padding: '8px', marginBottom: '10px' }}
         />
         <br />
+        {/* Email Input */}
         <input
           type="email"
           name="email"
@@ -66,6 +88,7 @@ const RegistrationForm = () => {
           style={{ padding: '8px', marginBottom: '10px' }}
         />
         <br />
+        {/* Password Input */}
         <input
           type="password"
           name="password"
@@ -75,13 +98,16 @@ const RegistrationForm = () => {
           style={{ padding: '8px', marginBottom: '20px' }}
         />
         <br />
+        {/* Submit Button */}
         <button type="submit" style={{ padding: '8px 16px' }}>
           Register
         </button>
       </form>
 
+      {/* Display error message */}
       {error && <p style={{ color: 'red', marginTop: '20px' }}>{error}</p>}
 
+      {/* Display submitted data */}
       {submittedData && (
         <div style={{ marginTop: '30px' }}>
           <h3>Entered Data:</h3>
