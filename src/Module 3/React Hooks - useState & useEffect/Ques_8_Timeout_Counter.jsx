@@ -12,24 +12,24 @@ const TimeoutCounter = () => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const timer = setInterval(() => {
       setCount(prev => prev + 1);
     }, 1000);
 
-    return () => clearTimeout(timer);
-  }, [count]);
+    return () => clearInterval(timer); // Clean up on unmount
+  }, []); // Empty dependency array = run only once on mount
 
   return (
     <div
       style={{
-        backgroundColor: "#282c34",
+        backgroundColor: "#1e1e1e",
         color: "#61dafb",
         height: "100vh",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        fontFamily: "Arial, sans-serif",
+        fontFamily: "Segoe UI, sans-serif",
       }}
     >
       <h2 style={{ fontSize: "2.5rem", marginBottom: "20px" }}>⏱ Timeout Counter</h2>
@@ -37,10 +37,10 @@ const TimeoutCounter = () => {
         style={{
           fontSize: "4rem",
           fontWeight: "bold",
-          backgroundColor: "#20232a",
+          backgroundColor: "#333",
           padding: "20px 40px",
           borderRadius: "12px",
-          boxShadow: "0 0 15px rgba(0, 255, 255, 0.3)",
+          boxShadow: "0 0 15px rgba(97, 218, 251, 0.5)",
         }}
       >
         {count}
