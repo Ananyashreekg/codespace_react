@@ -8,7 +8,7 @@
 
 import React, { useState, useEffect } from 'react';
 
-const Ques_10_Local_Storage = () => {
+const Ques_10.Local_Storage = () => {
   const [text, setText] = useState('');
   const [savedMessage, setSavedMessage] = useState('');
 
@@ -62,4 +62,4 @@ const Ques_10_Local_Storage = () => {
   );
 };
 
-export default Ques_10_Local_Storage;
+export default Ques_10.Local_Storage;
