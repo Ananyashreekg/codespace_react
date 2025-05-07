@@ -18,11 +18,17 @@ const counterSlice = createSlice({
       state.value = 0;
     },
     incrementByAmount: (state, action) => {
-      state.value += action.payload;
+      const amount = Number(action.payload);
+      if (!isNaN(amount)) {
+        state.value += amount;
+      }
     },
   },
 });
 
 export const { increment, decrement, reset, incrementByAmount } = counterSlice.actions;
+
+// Selector for performance
+export const selectCounterValue = (state) => state.counter.value;
 
 export default counterSlice.reducer;
