@@ -16,6 +16,11 @@ function App() {
     },
   };
 
+  // Basic render check for internal test
+  if (typeof AxiosData !== 'function') {
+    throw new Error('AxiosData component failed to load.');
+  }
+
   return (
     <div style={styles.container}>
       <h1 style={styles.heading}>Axios Data Fetch Example</h1>

@@ -1,11 +1,13 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import axios from 'axios';
 
+// AxiosData component to fetch and display user data from API
 const AxiosData = () => {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Internal CSS styles
   const styles = {
     wrapper: {
       backgroundColor: '#ffffff',
@@ -53,7 +55,8 @@ const AxiosData = () => {
     },
   };
 
-  const fetchUsers = async () => {
+  // Separated API fetch logic (reusable & testable)
+  const fetchUsers = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -70,12 +73,14 @@ const AxiosData = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  useEffect(() => {
-    fetchUsers();
   }, []);
 
+  // Initial API call
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
+
+  // Memoized rendering for user list
   const renderedUsers = useMemo(() => (
     <ol style={styles.list}>
       {users.map((user) => (
