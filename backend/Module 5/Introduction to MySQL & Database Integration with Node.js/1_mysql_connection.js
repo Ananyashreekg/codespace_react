@@ -17,7 +17,7 @@ async function connectDB() {
     });
 
     // Successfully connected
-    console.log('✅ Connected to MySQL and verified');
+    console.log('✅ Connected to MySQL');
     await connection.end();  // close connection
   } catch (err) {
     // Error handling
