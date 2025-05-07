@@ -37,7 +37,7 @@ function App() {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.heading}>Axios Data Fetch Example</h1>
+      <h1 style={styles.heading}>Axios Data Fetch</h1>
       <Suspense fallback={<p style={styles.fallback}>Loading component...</p>}>
         <ErrorBoundary FallbackComponent={ErrorFallback}>
           <AxiosData />
