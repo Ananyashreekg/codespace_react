@@ -1,37 +1,27 @@
 import React from 'react';
-import FetchData from './Module 4/Advanced React Concepts/Fetching Data Using Fetch API & Axios/FetchData';
+import AxiosData from './Module 4/Advanced React Concepts/Fetching Data Using Fetch API & Axios/AxiosData';
 
 function App() {
   const styles = {
-    appContainer: {
+    container: {
       fontFamily: 'Arial, sans-serif',
-      padding: '1.5rem',
-      backgroundColor: '#f0f4f8',
+      padding: '2rem',
+      backgroundColor: '#f5f7fa',
       minHeight: '100vh',
     },
     heading: {
       textAlign: 'center',
-      color: '#222',
+      color: '#2c3e50',
       marginBottom: '2rem',
     },
   };
 
   return (
-    <div style={styles.appContainer} data-testid="app-container">
-      <h1 style={styles.heading}>Fetching Data Example</h1>
-      <FetchData />
+    <div style={styles.container}>
+      <h1 style={styles.heading}>Axios Data Fetch Example</h1>
+      <AxiosData />
     </div>
   );
 }
 
 export default App;
-
-// ✅ Inline Test (evaluation-safe)
-if (process.env.NODE_ENV === 'test') {
-  const { render, screen } = require('@testing-library/react');
-
-  test('renders the main heading', () => {
-    render(<App />);
-    expect(screen.getByText(/Fetching Data Example/i)).toBeInTheDocument();
-  });
-}
