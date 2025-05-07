@@ -1,6 +1,35 @@
 import React from 'react';
 import MultistepFrpm from './Module 4/Advanced React Concepts/Forms/MultistepFrpm';
 
+// ErrorBoundary defined inside same file
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("Error caught by ErrorBoundary:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ padding: '20px', color: 'red' }}>
+          <h2>Something went wrong.</h2>
+          <p>{this.state.error?.toString()}</p>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
 function App() {
   return (
     <div>
@@ -44,8 +73,10 @@ function App() {
         }
       `}</style>
       <div className="app-container">
-        <h1>Multi-step Form Example</h1>
-        <MultistepFrpm />
+        <h1>Multi-step Form</h1>
+        <ErrorBoundary>
+          <MultistepFrpm />
+        </ErrorBoundary>
       </div>
     </div>
   );
