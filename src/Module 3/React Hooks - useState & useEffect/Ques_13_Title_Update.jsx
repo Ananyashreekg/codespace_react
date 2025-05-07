@@ -7,6 +7,7 @@
 //     - Create a button to increase the count and see the document title change.
 //     - Write your code within the file, by the name of component as Title_Update
 
+
 import React, { useState, useEffect } from "react";
 
 const TitleUpdate = () => {
@@ -17,7 +18,6 @@ const TitleUpdate = () => {
   }, [count]);
 
   const handleClick = () => {
-    // Prevent negative or invalid state
     setCount((prev) => (prev >= 0 ? prev + 1 : 0));
   };
 
@@ -35,7 +35,9 @@ const TitleUpdate = () => {
       >
         Click me
       </button>
-      <p>You clicked <strong>{count}</strong> {count === 1 ? "time" : "times"}</p>
+      <p>
+        You clicked <strong>{count}</strong> {count === 1 ? "time" : "times"}
+      </p>
     </div>
   );
 };
