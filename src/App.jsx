@@ -20,7 +20,7 @@ function App() {
       </style>
       
       <div className="app-container">
-        <h1>Controlled Form Example</h1>
+        <h1>Controlled Form</h1>
         <SimpleForm />
       </div>
     </>
