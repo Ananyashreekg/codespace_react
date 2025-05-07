@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+// SimpleForm Component
 function SimpleForm() {
   const [formData, setFormData] = useState({
     name: '',
@@ -11,7 +12,54 @@ function SimpleForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
 
-  // Validation function
+  // CSS Styles in JS (for inline styling)
+  const styles = {
+    formContainer: {
+      maxWidth: '400px',
+      margin: '40px auto',
+      padding: '20px',
+      border: '1px solid #ccc',
+      borderRadius: '8px',
+      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+      backgroundColor: '#f9f9f9'
+    },
+    error: {
+      color: 'red',
+      fontSize: '0.85rem',
+      marginTop: '-10px',
+      display: 'block'
+    },
+    input: {
+      width: '100%',
+      padding: '10px',
+      marginTop: '5px',
+      marginBottom: '15px',
+      borderRadius: '4px',
+      border: '1px solid #ccc'
+    },
+    button: {
+      padding: '10px 20px',
+      backgroundColor: '#4CAF50',
+      color: 'white',
+      border: 'none',
+      borderRadius: '4px',
+      cursor: 'pointer'
+    },
+    loading: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      color: '#4CAF50'
+    },
+    successMessage: {
+      color: 'green',
+      fontSize: '1rem',
+      marginTop: '10px',
+      textAlign: 'center'
+    }
+  };
+
+  // Validation function for form fields
   const validate = () => {
     const newErrors = {};
     if (!formData.name.trim()) {
@@ -29,6 +77,7 @@ function SimpleForm() {
     return Object.keys(newErrors).length === 0;
   };
 
+  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -37,6 +86,7 @@ function SimpleForm() {
     }));
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
@@ -56,106 +106,54 @@ function SimpleForm() {
   };
 
   return (
-    <>
-      <style>
-        {`
-          .form-container {
-            max-width: 400px;
-            margin: 40px auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            background-color: #f9f9f9;
-          }
+    <form onSubmit={handleSubmit} style={styles.formContainer}>
+      <div>
+        <label>Name:</label>
+        <input
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          style={styles.input}
+        />
+        {errors.name && <span style={styles.error}>{errors.name}</span>}
+      </div>
 
-          .error {
-            color: red;
-            font-size: 0.85rem;
-            margin-top: -10px;
-            display: block;
-          }
+      <div>
+        <label>Email:</label>
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          style={styles.input}
+        />
+        {errors.email && <span style={styles.error}>{errors.email}</span>}
+      </div>
 
-          input, textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 15px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-          }
+      <div>
+        <label>Message:</label>
+        <textarea
+          name="message"
+          value={formData.message}
+          onChange={handleChange}
+          style={styles.input}
+        />
+        {errors.message && <span style={styles.error}>{errors.message}</span>}
+      </div>
 
-          button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-          }
+      <button type="submit" disabled={isSubmitting} style={styles.button}>
+        {isSubmitting ? (
+          <div style={styles.loading}>
+            <span>Submitting...</span>
+          </div>
+        ) : (
+          'Submit'
+        )}
+      </button>
 
-          .loading {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #4CAF50;
-          }
-
-          .success-message {
-            color: green;
-            font-size: 1rem;
-            margin-top: 10px;
-            text-align: center;
-          }
-        `}
-      </style>
-
-      <form onSubmit={handleSubmit} className="form-container">
-        <div>
-          <label>Name:</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-          {errors.name && <span className="error">{errors.name}</span>}
-        </div>
-
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-          {errors.email && <span className="error">{errors.email}</span>}
-        </div>
-
-        <div>
-          <label>Message:</label>
-          <textarea
-            name="message"
-            value={formData.message}
-            onChange={handleChange}
-          />
-          {errors.message && <span className="error">{errors.message}</span>}
-        </div>
-
-        <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? (
-            <div className="loading">
-              <span>Submitting...</span>
-            </div>
-          ) : (
-            'Submit'
-          )}
-        </button>
-      </form>
-
-      {successMessage && <div className="success-message">{successMessage}</div>}
-    </>
+      {successMessage && <div style={styles.successMessage}>{successMessage}</div>}
+    </form>
   );
 }
 
