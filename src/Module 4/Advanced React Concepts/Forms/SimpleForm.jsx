@@ -1,4 +1,3 @@
-// SimpleForm.jsx
 import React, { useState } from 'react';
 
 function SimpleForm() {
@@ -7,6 +6,26 @@ function SimpleForm() {
     email: '',
     message: ''
   });
+
+  const [errors, setErrors] = useState({});
+
+  // Validation function
+  const validate = () => {
+    const newErrors = {};
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required';
+    }
+    if (!formData.email) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Invalid email address';
+    }
+    if (!formData.message.trim()) {
+      newErrors.message = 'Message is required';
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,87 +37,89 @@ function SimpleForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!validate()) return;
     alert(`Submitted: ${JSON.stringify(formData, null, 2)}`);
-    setFormData({
-      name: '',
-      email: '',
-      message: ''
-    });
-  };
-
-  const formStyle = {
-    maxWidth: '400px',
-    margin: '40px auto',
-    padding: '20px',
-    border: '1px solid #ccc',
-    borderRadius: '8px',
-    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-    backgroundColor: '#f9f9f9'
-  };
-
-  const inputStyle = {
-    width: '100%',
-    padding: '10px',
-    marginTop: '5px',
-    marginBottom: '15px',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
-    fontSize: '16px'
-  };
-
-  const buttonStyle = {
-    padding: '10px 20px',
-    backgroundColor: '#4CAF50',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    fontSize: '16px'
-  };
-
-  const labelStyle = {
-    fontWeight: 'bold'
+    setFormData({ name: '', email: '', message: '' });
+    setErrors({});
   };
 
   return (
-    <form onSubmit={handleSubmit} style={formStyle}>
-      <div>
-        <label style={labelStyle}>Name:</label>
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          style={inputStyle}
-          required
-        />
-      </div>
+    <>
+      <style>
+        {`
+          .form-container {
+            max-width: 400px;
+            margin: 40px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+          }
 
-      <div>
-        <label style={labelStyle}>Email:</label>
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          style={inputStyle}
-          required
-        />
-      </div>
+          .error {
+            color: red;
+            font-size: 0.85rem;
+            margin-top: -10px;
+            display: block;
+          }
 
-      <div>
-        <label style={labelStyle}>Message:</label>
-        <textarea
-          name="message"
-          value={formData.message}
-          onChange={handleChange}
-          style={{ ...inputStyle, height: '100px' }}
-          required
-        />
-      </div>
+          input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+          }
 
-      <button type="submit" style={buttonStyle}>Submit</button>
-    </form>
+          button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+          }
+        `}
+      </style>
+
+      <form onSubmit={handleSubmit} className="form-container">
+        <div>
+          <label>Name:</label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+          />
+          {errors.name && <span className="error">{errors.name}</span>}
+        </div>
+
+        <div>
+          <label>Email:</label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+          />
+          {errors.email && <span className="error">{errors.email}</span>}
+        </div>
+
+        <div>
+          <label>Message:</label>
+          <textarea
+            name="message"
+            value={formData.message}
+            onChange={handleChange}
+          />
+          {errors.message && <span className="error">{errors.message}</span>}
+        </div>
+
+        <button type="submit">Submit</button>
+      </form>
+    </>
   );
 }
 
