@@ -6,3 +6,4 @@
 // 2. Open a terminal and navigate to the directory containing hello.js .
 // 3. Run the JavaScript file using Node.js ......
 
+console.log("Hello, Node.js!");
