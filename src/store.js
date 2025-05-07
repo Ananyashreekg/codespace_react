@@ -1,18 +1,10 @@
-const loggerMiddleware = (storeAPI) => (next) => (action) => {
-    try {
-      return next(action);
-    } catch (err) {
-      console.error('Redux error:', err);
-      throw err;
-    }
-  };
-  
-  const store = configureStore({
-    reducer: {
-      counter: counterReducer,
-    },
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(loggerMiddleware),
-    devTools: process.env.NODE_ENV !== 'production',
-  });
-  
+import { configureStore } from '@reduxjs/toolkit';
+import todosReducer from './Module 4/Redux Toolkit - State Management in React/Todos_Redux/todosSlice';
+
+const store = configureStore({
+  reducer: {
+    todos: todosReducer,
+  },
+});
+
+export default store;

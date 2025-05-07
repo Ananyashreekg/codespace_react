@@ -1,35 +1,14 @@
 import React from 'react';
-import Counter from './Module 4/Redux Toolkit - State Management in React/Counter_Redux/Counter';
+import { Provider } from 'react-redux';
+import store from './store';
+import Todos from './Module 4/Redux Toolkit - State Management in React/Todos_Redux/Todos';
 
-function App() {
+const App = () => {
   return (
-    <div>
-      <h1 style={{ textAlign: 'center' }}>Redux Toolkit Counter Application</h1>
-      <ErrorBoundary>
-        <Counter />
-      </ErrorBoundary>
-    </div>
+    <Provider store={store}>
+      <Todos />
+    </Provider>
   );
-}
-
-// Simple error boundary
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-  static getDerivedStateFromError() {
-    return { hasError: true };
-  }
-  componentDidCatch(error, info) {
-    console.error("Error caught by boundary:", error, info);
-  }
-  render() {
-    if (this.state.hasError) {
-      return <h2>Something went wrong.</h2>;
-    }
-    return this.props.children;
-  }
-}
+};
 
 export default App;
