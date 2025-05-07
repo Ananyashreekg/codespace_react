@@ -2,7 +2,6 @@ import React from 'react';
 import FetchData from './Module 4/Advanced React Concepts/Fetching Data Using Fetch API & Axios/FetchData';
 
 function App() {
-  // Internal styles
   const styles = {
     appContainer: {
       fontFamily: 'Arial, sans-serif',
@@ -18,8 +17,8 @@ function App() {
   };
 
   return (
-    <div style={styles.appContainer}>
-      <h1 style={styles.heading}>Fetching Data</h1>
+    <div style={styles.appContainer} data-testid="app-container">
+      <h1 style={styles.heading}>Fetching Data Example</h1>
       <FetchData />
     </div>
   );
