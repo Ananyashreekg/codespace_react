@@ -12,7 +12,7 @@ app.use((req, res, next) => {
 
 // A simple route
 app.get("/", (req, res) => {
-  res.send("Hello, World I am Ananyashree K G!");
+  res.send("Hello, World!");
 });
 
 // A route to simulate a server error
