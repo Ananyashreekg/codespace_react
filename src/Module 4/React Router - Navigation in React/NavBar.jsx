@@ -1,14 +1,16 @@
-import React from 'react';
-import "./NavBar.css";
-import { Link } from "react-router-dom";
+import React from "react";
+import { NavLink } from "react-router-dom";
+import "./NavBar.css"; // Add your styles here
 
-const NavBar = () => (
-  <nav style={{ padding: "1rem", backgroundColor: "#eee" }}>
-    <Link to="/" style={{ margin: "0 1rem" }}>Home</Link>
-    <Link to="/about" style={{ margin: "0 1rem" }}>About</Link>
-    <Link to="/contact" style={{ margin: "0 1rem" }}>Contact</Link>
-    <Link to="/subpage" style={{ margin: "0 1rem" }}>Subpage</Link>
-  </nav>
-);
+function NavBar() {
+  return (
+    <nav>
+      <NavLink to="/" className={({ isActive }) => isActive ? "active-link" : ""}>Home</NavLink>
+      <NavLink to="/about" className={({ isActive }) => isActive ? "active-link" : ""}>About</NavLink>
+      <NavLink to="/about/subpage" className={({ isActive }) => isActive ? "active-link" : ""}>Subpage</NavLink>
+      <NavLink to="/contact" className={({ isActive }) => isActive ? "active-link" : ""}>Contact</NavLink>
+    </nav>
+  );
+}
 
-export default NavBar
+export default NavBar;

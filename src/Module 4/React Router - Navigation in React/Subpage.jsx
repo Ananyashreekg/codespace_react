@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
-const Subpage = () => {
-  return (
-    <div>
-      <h1>This is a Subpage</h1>
-    </div>
-  )
+function Subpage() {
+  return <h2>This is a subpage nested under About.</h2>;
 }
 
-export default Subpage
+export default Subpage;
