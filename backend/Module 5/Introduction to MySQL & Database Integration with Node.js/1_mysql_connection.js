@@ -3,7 +3,6 @@
 // Create a database and create a Student table
 
 // Import the mysql3 package
-
 const mysql = require('mysql2/promise');
 
 async function connectDB() {
@@ -16,19 +15,42 @@ async function connectDB() {
       database: 'testdb'       // your database name
     });
 
-    // Successfully connected
-    console.log('✅ Connected to MySQL');
+    console.log('✅ Connected to MySQL and verified');
     await connection.end();  // close connection
   } catch (err) {
-    // Error handling
-    if (err.code === 'ER_ACCESS_DENIED_ERROR') {
-      console.error('❌ Access denied. Check credentials.');
-    } else if (err.code === 'ECONNREFUSED') {
-      console.error('❌ Connection refused. Is MySQL running?');
-    } else {
-      console.error('❌ Connection failed:', err.message);
+    // Enhanced error handling
+
+    switch (err.code) {
+      case 'ER_ACCESS_DENIED_ERROR':
+        console.error('❌ Access denied. Check your username/password and try again.');
+        break;
+      
+      case 'ER_BAD_DB_ERROR':
+        console.error('❌ Database does not exist. Ensure that "testdb" is created or change to an existing DB.');
+        break;
+
+      case 'ECONNREFUSED':
+        console.error('❌ Connection refused. Is MySQL server running? Try restarting it.');
+        break;
+      
+      case 'PROTOCOL_CONNECTION_LOST':
+        console.error('❌ The connection was closed unexpectedly. Please check if the MySQL server is reachable.');
+        break;
+
+      case 'ER_CON_COUNT_ERROR':
+        console.error('❌ Too many connections to the database. Try closing other connections or check your database configuration.');
+        break;
+
+      case 'ETIMEDOUT':
+        console.error('❌ Connection timed out. Check your network or MySQL server status.');
+        break;
+      
+      default:
+        console.error('❌ An unexpected error occurred:', err.message);
+        break;
     }
   }
 }
 
 connectDB();
+
