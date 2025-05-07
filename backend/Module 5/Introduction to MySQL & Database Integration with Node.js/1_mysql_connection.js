@@ -15,7 +15,7 @@ async function connectDB() {
       database: 'testdb'   // set your actual DB name
     });
 
-    console.log('✅ Connected to MySQL');
+    console.log('✅ Connected to MySQL and verified');
     await connection.end();
   } catch (err) {
     console.error('❌ Connection failed:', err);  // FULL error object
