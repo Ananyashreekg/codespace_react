@@ -8,6 +8,8 @@ function SimpleForm() {
   });
 
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
   // Validation function
   const validate = () => {
@@ -35,12 +37,22 @@ function SimpleForm() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
-    alert(`Submitted: ${JSON.stringify(formData, null, 2)}`);
-    setFormData({ name: '', email: '', message: '' });
-    setErrors({});
+
+    setIsSubmitting(true);
+    setSuccessMessage('');
+
+    // Simulate an async operation like API call
+    setTimeout(() => {
+      alert(`Submitted: ${JSON.stringify(formData, null, 2)}`);
+      setFormData({ name: '', email: '', message: '' });
+      setErrors({});
+      setIsSubmitting(false);
+      setSuccessMessage('Form submitted successfully!');
+      document.querySelector('input[name="name"]').focus(); // Focus the name field after submit
+    }, 2000);
   };
 
   return (
@@ -81,6 +93,20 @@ function SimpleForm() {
             border-radius: 4px;
             cursor: pointer;
           }
+
+          .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #4CAF50;
+          }
+
+          .success-message {
+            color: green;
+            font-size: 1rem;
+            margin-top: 10px;
+            text-align: center;
+          }
         `}
       </style>
 
@@ -117,8 +143,18 @@ function SimpleForm() {
           {errors.message && <span className="error">{errors.message}</span>}
         </div>
 
-        <button type="submit">Submit</button>
+        <button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? (
+            <div className="loading">
+              <span>Submitting...</span>
+            </div>
+          ) : (
+            'Submit'
+          )}
+        </button>
       </form>
+
+      {successMessage && <div className="success-message">{successMessage}</div>}
     </>
   );
 }
