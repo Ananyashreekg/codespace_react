@@ -4,7 +4,7 @@ import ParentComponent from "./Module 4/Advanced React Concepts/Optimizing Perfo
 const App = () => {
   return (
     <div style={{ textAlign: "center", fontFamily: "Arial, sans-serif", marginTop: "30px" }}>
-      <h1 style={{ color: "#333" }}>React.memo Optimization Demo</h1>
+      <h1 style={{ color: "#333" }}>React.memo Optimization</h1>
       <ParentComponent />
     </div>
   );
