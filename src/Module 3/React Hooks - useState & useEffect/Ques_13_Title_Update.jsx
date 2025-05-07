@@ -13,15 +13,19 @@ const TitleUpdate = () => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    // Update the document title whenever count changes
     document.title = `Clicked ${count} ${count === 1 ? "time" : "times"}`;
   }, [count]);
+
+  const handleClick = () => {
+    // Prevent negative or invalid state
+    setCount((prev) => (prev >= 0 ? prev + 1 : 0));
+  };
 
   return (
     <div style={{ padding: "20px", fontFamily: "sans-serif" }}>
       <h2>Document Title Update</h2>
       <button
-        onClick={() => setCount((prev) => prev + 1)}
+        onClick={handleClick}
         style={{
           padding: "10px 20px",
           fontSize: "16px",
