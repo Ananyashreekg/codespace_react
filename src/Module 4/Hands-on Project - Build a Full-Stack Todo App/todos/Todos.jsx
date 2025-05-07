@@ -19,4 +19,4 @@ function Todos({ todos, removeTodo, toggleTodo }) {
   );
 }
 
-export default Todos;
+export default React.memo(Todos);

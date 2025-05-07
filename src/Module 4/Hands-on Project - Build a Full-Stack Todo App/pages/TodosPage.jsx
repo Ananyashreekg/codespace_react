@@ -5,18 +5,22 @@ import Todos from '../todos/Todos';
 
 function TodosPage() {
   const [newTodo, setNewTodo] = useState('');
+  const [error, setError] = useState('');
   const dispatch = useDispatch();
   const todos = useSelector(state => state.todos.todos);
 
   const handleAddTodo = () => {
-    if (newTodo.trim()) {
-      dispatch(addTodo({
-        id: Date.now(),
-        text: newTodo,
-        completed: false,
-      }));
-      setNewTodo('');
+    if (newTodo.trim() === '') {
+      setError('Todo cannot be empty');
+      return;
     }
+    setError('');
+    dispatch(addTodo({
+      id: Date.now(),
+      text: newTodo,
+      completed: false,
+    }));
+    setNewTodo('');
   };
 
   return (
@@ -29,6 +33,7 @@ function TodosPage() {
         placeholder="Enter new task"
       />
       <button onClick={handleAddTodo}>Add Todo</button>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
       <Todos todos={todos} removeTodo={removeTodo} toggleTodo={toggleTodo} />
     </div>
   );
