@@ -47,7 +47,7 @@ const Ques_10.Local_Storage = () => {
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="Type something..."
-        style={{ padding: '8px', fontSize: '16px', width: '300px' }}
+        style={{ padding: '8px', fontSize: '18px', width: '300px' }}
       />
       <div style={{ marginTop: '10px' }}>
         <button onClick={handleClear} style={{ padding: '6px 12px', marginTop: '10px' }}>
