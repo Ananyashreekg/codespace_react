@@ -4,7 +4,7 @@ import Counter from './Module 4/Redux Toolkit - State Management in React/Counte
 function App() {
   return (
     <div>
-      <h1 style={{ textAlign: 'center' }}>Redux Toolkit Counter App</h1>
+      <h1 style={{ textAlign: 'center' }}>Redux Toolkit Counter Application</h1>
       <ErrorBoundary>
         <Counter />
       </ErrorBoundary>

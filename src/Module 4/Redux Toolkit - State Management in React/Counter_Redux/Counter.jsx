@@ -31,7 +31,7 @@ const Counter = React.memo(() => {
     <div style={{ textAlign: 'center', marginTop: '50px' }}>
       <h2>Counter: {count}</h2>
       <button onClick={handleIncrement}>Increment</button>
-      <button onClick={handleDecrement} style={{ margin: '0 10px' }}>Decrement</button>
+      <button onClick={handleDecrement} style={{ margin: '0 12px' }}>Decrement</button>
       <button onClick={handleReset}>Reset</button>
       <br /><br />
       <input
