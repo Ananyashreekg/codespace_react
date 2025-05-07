@@ -1,13 +1,11 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import axios from 'axios';
 
-// AxiosData component to fetch and display user data from API
 const AxiosData = () => {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Internal CSS styles
   const styles = {
     wrapper: {
       backgroundColor: '#ffffff',
@@ -55,7 +53,7 @@ const AxiosData = () => {
     },
   };
 
-  // Separated API fetch logic (reusable & testable)
+  // Fetch users with Axios and handle errors
   const fetchUsers = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -75,16 +73,14 @@ const AxiosData = () => {
     }
   }, []);
 
-  // Initial API call
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
 
-  // Memoized rendering for user list
   const renderedUsers = useMemo(() => (
     <ol style={styles.list}>
       {users.map((user) => (
-        <li key={user.id} style={styles.item} aria-label={`User ${user.name}`}>
+        <li key={user.id} style={styles.item}>
           <strong>{user.name}</strong> — {user.email}
         </li>
       ))}
@@ -94,16 +90,13 @@ const AxiosData = () => {
   return (
     <section style={styles.wrapper} aria-live="polite">
       <h2 style={styles.heading}>User List (Axios)</h2>
-
       {loading && <p style={styles.loading}>Loading user data...</p>}
-
       {!loading && error && (
         <>
           <p style={styles.error}>{error}</p>
           <button style={styles.retryBtn} onClick={fetchUsers}>Retry</button>
         </>
       )}
-
       {!loading && !error && renderedUsers}
     </section>
   );

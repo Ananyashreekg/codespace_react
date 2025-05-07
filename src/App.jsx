@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import AxiosData from './Module 4/Advanced React Concepts/Fetching Data Using Fetch API & Axios/AxiosData';
 
 function App() {
@@ -14,19 +14,55 @@ function App() {
       color: '#2c3e50',
       marginBottom: '2rem',
     },
+    fallback: {
+      textAlign: 'center',
+      color: '#7f8c8d',
+    },
+    errorBox: {
+      textAlign: 'center',
+      backgroundColor: '#fdecea',
+      color: '#c0392b',
+      padding: '1rem',
+      borderRadius: '8px',
+    },
   };
 
-  // Basic render check for internal test
-  if (typeof AxiosData !== 'function') {
-    throw new Error('AxiosData component failed to load.');
-  }
+  // Error boundary fallback
+  const ErrorFallback = ({ error }) => (
+    <div style={styles.errorBox}>
+      <p>Something went wrong while loading the component.</p>
+      <pre>{error.message}</pre>
+    </div>
+  );
 
   return (
     <div style={styles.container}>
       <h1 style={styles.heading}>Axios Data Fetch Example</h1>
-      <AxiosData />
+      <Suspense fallback={<p style={styles.fallback}>Loading component...</p>}>
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <AxiosData />
+        </ErrorBoundary>
+      </Suspense>
     </div>
   );
+}
+
+// Custom basic error boundary component
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  render() {
+    const { hasError, error } = this.state;
+    const { FallbackComponent, children } = this.props;
+    return hasError ? <FallbackComponent error={error} /> : children;
+  }
 }
 
 export default App;
