@@ -8,19 +8,27 @@ const mysql = require('mysql2/promise');
 
 async function connectDB() {
   try {
+    // Establish connection
     const connection = await mysql.createConnection({
       host: 'localhost',
-      user: 'root',
-      password: 'password',        // set your real password
-      database: 'testdb'   // set your actual DB name
+      user: 'root',            // your MySQL user
+      password: 'password',    // your MySQL password
+      database: 'testdb'       // your database name
     });
 
+    // Successfully connected
     console.log('✅ Connected to MySQL and verified');
-    await connection.end();
+    await connection.end();  // close connection
   } catch (err) {
-    console.error('❌ Connection failed:', err);  // FULL error object
+    // Error handling
+    if (err.code === 'ER_ACCESS_DENIED_ERROR') {
+      console.error('❌ Access denied. Check credentials.');
+    } else if (err.code === 'ECONNREFUSED') {
+      console.error('❌ Connection refused. Is MySQL running?');
+    } else {
+      console.error('❌ Connection failed:', err.message);
+    }
   }
 }
 
 connectDB();
-
