@@ -10,17 +10,23 @@
 import React, { useState, useEffect } from "react";
 
 const WindowWidth = () => {
-  const [width, setWidth] = useState(window.innerWidth);
+  const getWindowWidth = () => (typeof window !== "undefined" ? window.innerWidth : 0);
+  const [width, setWidth] = useState(getWindowWidth());
 
   useEffect(() => {
+    let timeoutId = null;
+
     const handleResize = () => {
-      setWidth(window.innerWidth);
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setWidth(getWindowWidth());
+      }, 200); // debounce delay
     };
 
     window.addEventListener("resize", handleResize);
 
-    // Cleanup the event listener when the component unmounts
     return () => {
+      clearTimeout(timeoutId);
       window.removeEventListener("resize", handleResize);
     };
   }, []);
@@ -28,7 +34,9 @@ const WindowWidth = () => {
   return (
     <div style={{ padding: "20px" }}>
       <h2>Current Window Width</h2>
-      <p style={{ fontSize: "24px", fontWeight: "bold" }}>{width}px</p>
+      <p style={{ fontSize: "24px", fontWeight: "bold" }}>
+        {width > 0 ? `${width}px` : "Window size not available"}
+      </p>
     </div>
   );
 };
