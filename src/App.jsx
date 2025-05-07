@@ -3,12 +3,37 @@ import { Provider } from 'react-redux';
 import store from './store';
 import Todos from './Module 4/Redux Toolkit - State Management in React/Todos_Redux/Todos';
 
+// ErrorBoundary to catch rendering issues in the app
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("App Error Caught:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <h2 style={{ color: 'red', textAlign: 'center' }}>Something went wrong.</h2>;
+    }
+    return this.props.children;
+  }
+}
+
 const App = () => (
   <Provider store={store}>
-    <div style={styles.container}>
-      <h1 style={styles.heading}>To-Do List</h1>
-      <Todos />
-    </div>
+    <ErrorBoundary>
+      <div className="app-container">
+        <h1 className="app-heading">To-Do List</h1>
+        <Todos />
+      </div>
+    </ErrorBoundary>
   </Provider>
 );
 
