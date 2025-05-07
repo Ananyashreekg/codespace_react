@@ -17,7 +17,6 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/about/subpage" element={<Subpage />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Suspense>
     </Router>
