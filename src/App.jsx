@@ -1,29 +1,22 @@
 import React from 'react';
-import SimpleForm from './Module 4/Advanced React Concepts/Forms/SimpleForm';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './Module 4/Hands-on Project - Build a Full-Stack Todo App/components/Navbar';
+import Home from './Module 4/Hands-on Project - Build a Full-Stack Todo App/pages/Home';
+import About from './Module 4/Hands-on Project - Build a Full-Stack Todo App/pages/About';
+import Contact from './Module 4/Hands-on Project - Build a Full-Stack Todo App/pages/Contact';
+import TodosPage from './Module 4/Hands-on Project - Build a Full-Stack Todo App/pages/TodosPage';
 
 function App() {
   return (
-    <>
-      <style>
-        {`
-          .app-container {
-            text-align: center;
-            font-family: Arial, sans-serif;
-          }
-
-          h1 {
-            color: #333;
-            font-size: 2rem;
-            margin-bottom: 20px;
-          }
-        `}
-      </style>
-      
-      <div className="app-container">
-        <h1>Controlled Form</h1>
-        <SimpleForm />
-      </div>
-    </>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/todos" element={<TodosPage />} />
+      </Routes>
+    </Router>
   );
 }
 

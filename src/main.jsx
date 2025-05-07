@@ -8,12 +8,11 @@
 //     <App />
 //   </StrictMode>,
 // )
-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { Provider } from 'react-redux';
-import store from './store';
+import store from './Module 4/Hands-on Project - Build a Full-Stack Todo App/app/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
