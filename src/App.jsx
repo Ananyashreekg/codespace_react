@@ -19,7 +19,7 @@ function App() {
 
   return (
     <div style={styles.appContainer}>
-      <h1 style={styles.heading}>Fetching Data Example</h1>
+      <h1 style={styles.heading}>Fetching Data</h1>
       <FetchData />
     </div>
   );
