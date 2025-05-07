@@ -1,11 +1,23 @@
 import './App.css'
-import React from 'react';
-import Ques_13_Title_Update from './Module 3/React Hooks - useState & useEffect/Ques_13_Title_Update';
-// /workspaces/codespace_react/src/Module 3/React Hooks - useState & useEffect
-function App() {
-        return (
-        <Ques_13_Title_Update />
-    );
-}
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import NavBar from "./Module 4/React Router - Navigation in React/NavBar";
+import Home from "./Module 4/React Router - Navigation in React/Home";
+import About from "./Module 4/React Router - Navigation in React/About";
+import Contact from "./Module 4/React Router - Navigation in React/Contact";
+import Subpage from "./Module 4/React Router - Navigation in React/Subpage";
+
+const App = () => (
+  <Router>
+    <NavBar />
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/subpage" element={<Subpage />} />
+      <Route path="*" element={<Home />} />
+    </Routes>
+  </Router>
+);
 
 export default App;
