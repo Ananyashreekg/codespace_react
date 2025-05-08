@@ -1,21 +1,20 @@
-// config/db.js
 const mysql = require('mysql2');
-
-// Create a connection to the database
+const bcrypt = require('bcrypt');
+// Controller: Create a new user
+const hashedPassword = await bcrypt.hash(password, 10);
 const db = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || 'password',
+  database: process.env.DB_NAME || 'user_management',
 });
 
-// Connect to MySQL
 db.connect((err) => {
   if (err) {
-    console.error('error connecting to database:', err.stack);
-    return;
+    console.error('❌ Error connecting to database:', err.message);
+    process.exit(1); // Stop server if DB connection fails
   }
-  console.log('connected to database');
+  console.log('✅ Connected to MySQL Database');
 });
 
 module.exports = db;
