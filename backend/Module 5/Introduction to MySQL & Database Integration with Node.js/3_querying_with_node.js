@@ -1,6 +1,6 @@
 const mysql = require('mysql');
 
-// Create connection pool
+// Create a connection pool for better performance and concurrency
 const pool = mysql.createPool({
   connectionLimit: 10,
   host: 'localhost',
@@ -9,73 +9,107 @@ const pool = mysql.createPool({
   multipleStatements: true
 });
 
-// Create database and table if not exists
+// SQL script to create the 'school' database and 'students' table if they don't exist
 const setupDatabase = `
   CREATE DATABASE IF NOT EXISTS school;
   USE school;
   CREATE TABLE IF NOT EXISTS students (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100),
+    name VARCHAR(100) NOT NULL,
     age INT CHECK (age > 0),
-    grade CHAR(1)
+    grade CHAR(1) CHECK (grade IN ('A','B','C','D','E','F'))
   );
 `;
 
+// Student data including some edge cases
 const students = [
   { name: 'Alice', age: 13, grade: 'B' },
   { name: 'Bob', age: 15, grade: 'A' },
-  { name: 'Charlie', age: 14, grade: 'C' },       // Edge case: age = 14
-  { name: 'Daisy', age: 16, grade: 'B' },
-  { name: null, age: 17, grade: 'A' },            // Edge case: name null
-  { name: 'Eve', age: -1, grade: 'F' },           // Invalid age
-  { name: 'Frank', age: 20, grade: null }         // Edge case: grade null
+  { name: 'Charlie', age: 14, grade: 'C' },
+  { name: 'Daisy', age: 16, grade: 'Z' },      // Invalid grade
+  { name: null, age: 17, grade: 'A' },         // Null name
+  { name: 'Eve', age: -1, grade: 'F' },        // Negative age
+  { name: 'Frank', age: 20, grade: null },     // Null grade
+  { name: 'Grace', age: 21, grade: 'E' }
 ];
 
-// Validate student data
+// Valid grades for validation
+const validGrades = ['A', 'B', 'C', 'D', 'E', 'F'];
+
+/**
+ * Validates a student object before inserting into DB.
+ * Ensures name is not null, age is a positive integer, and grade is valid.
+ */
 function isValidStudent(s) {
-  return s.name && Number.isInteger(s.age) && s.age > 0;
+  return s.name &&
+         Number.isInteger(s.age) && s.age > 0 &&
+         s.grade && validGrades.includes(s.grade);
 }
 
-// Start execution
+// Main execution block
 pool.getConnection((err, connection) => {
   if (err) throw err;
 
-  // Setup DB and Table
+  // Step 1: Set up database and table
   connection.query(setupDatabase, (err) => {
     if (err) {
       connection.release();
       throw err;
     }
 
-    // Filter and Insert Valid Students
+    // Step 2: Filter valid student records
     const validStudents = students.filter(isValidStudent);
-    if (validStudents.length > 0) {
+    if (validStudents.length === 0) {
+      console.log('No valid students to insert.');
+      connection.release();
+      pool.end();
+      return;
+    }
+
+    // Step 3: Begin transaction for safe batch insert
+    connection.beginTransaction((err) => {
+      if (err) {
+        connection.release();
+        throw err;
+      }
+
       const insertSQL = 'INSERT INTO students (name, age, grade) VALUES ?';
       const values = validStudents.map(s => [s.name, s.age, s.grade]);
 
       connection.query(insertSQL, [values], (err, result) => {
         if (err) {
-          console.error('Insert Error:', err);
-        } else {
-          console.log(`${result.affectedRows} students inserted.`);
+          return connection.rollback(() => {
+            console.error('Insertion failed, rolling back.', err);
+            connection.release();
+          });
         }
 
-        // Now query for students with age > 14
-        const querySQL = 'SELECT * FROM students WHERE age > 14';
-        connection.query(querySQL, (err, rows) => {
+        // Step 4: Commit the transaction if insertion succeeds
+        connection.commit((err) => {
           if (err) {
-            console.error('Query Error:', err);
-          } else {
-            console.log('Students aged > 14:\n', rows);
+            return connection.rollback(() => {
+              console.error('Commit failed, rolling back.', err);
+              connection.release();
+            });
           }
-          connection.release();
-          pool.end();
+
+          console.log(`${result.affectedRows} valid students inserted.`);
+
+          // Step 5: Query all students with age > 14
+          const querySQL = 'SELECT * FROM students WHERE age > 14';
+          connection.query(querySQL, (err, rows) => {
+            if (err) {
+              console.error('Query failed:', err);
+            } else {
+              console.log('Students aged > 14:\n', rows);
+            }
+
+            // Step 6: Release connection and end pool
+            connection.release();
+            pool.end();
+          });
         });
       });
-    } else {
-      console.log('No valid students to insert.');
-      connection.release();
-      pool.end();
-    }
+    });
   });
 });
