@@ -56,7 +56,7 @@ function insertStudent(student) {
 
 // Sample data
 const student = {
-  name: 'John Doe',
+  name: 'Ananyashree K G',
   age: 20,
   grade: 'A'
 };
