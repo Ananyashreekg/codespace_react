@@ -9,14 +9,12 @@
 //   </StrictMode>,
 // )
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import App from './App';
-import { Provider } from 'react-redux';
-import store from './Module 4/Hands-on Project - Build a Full-Stack Todo App/app/store';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <Provider store={store}>
+ReactDOM.render(
+  <React.StrictMode>
     <App />
-  </Provider>
+  </React.StrictMode>,
+  document.getElementById('root')
 );
