@@ -30,7 +30,7 @@ const students = [
   { name: null, age: 17, grade: 'A' },         // Null name
   { name: 'Eve', age: -1, grade: 'F' },        // Negative age
   { name: 'Frank', age: 20, grade: null },     // Null grade
-  { name: 'Grace', age: 21, grade: 'E' }
+  { name: 'Grace', age: 21, grade: 'B' }
 ];
 
 // Valid grades for validation
