@@ -1,7 +1,7 @@
 const mysql = require('mysql2');
-const bcrypt = require('bcrypt');
-// Controller: Create a new user
-const hashedPassword = await bcrypt.hash(password, 10);
+const dotenv = require('dotenv');
+
+dotenv.config();
 const db = mysql.createConnection({
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',

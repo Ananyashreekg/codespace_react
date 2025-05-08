@@ -4,14 +4,13 @@ const userController = require('../controllers/userController');
 
 const router = express.Router();
 
-// Validation rules
 const userValidation = [
-  check('name', 'Name is required').notEmpty(),
-  check('email', 'Invalid email').isEmail(),
-  check('password', 'Password must be 6+ characters').isLength({ min: 6 }),
+  check('name').notEmpty().withMessage('Name is required'),
+  check('email').isEmail().withMessage('Valid email is required'),
+  check('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
+  check('role').notEmpty().withMessage('Role is required')
 ];
 
-// Routes
 router.post('/users', userValidation, userController.createUser);
 router.get('/users', userController.getUsers);
 router.get('/users/:id', userController.getUserById);
