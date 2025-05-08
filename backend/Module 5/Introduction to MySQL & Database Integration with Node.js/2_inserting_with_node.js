@@ -1,6 +1,6 @@
 const mysql = require('mysql');
 
-// Create a connection pool (recommended for better performance)
+// Create a connection pool
 const pool = mysql.createPool({
   connectionLimit: 10,
   host: 'localhost',
@@ -9,57 +9,67 @@ const pool = mysql.createPool({
   database: 'school'
 });
 
-// Input validation function
-function validateStudent(student) {
-  if (!student.name || typeof student.name !== 'string') {
-    throw new Error('Invalid or missing student name');
+// Input validation for multiple students
+function validateStudents(students) {
+  if (!Array.isArray(students) || students.length === 0) {
+    throw new Error('Input must be a non-empty array of student objects.');
   }
-  if (!Number.isInteger(student.age) || student.age <= 0) {
-    throw new Error('Invalid or missing student age');
-  }
-  if (!student.grade || typeof student.grade !== 'string') {
-    throw new Error('Invalid or missing student grade');
-  }
+
+  students.forEach((student, index) => {
+    if (!student.name || typeof student.name !== 'string') {
+      throw new Error(`Student at index ${index} has invalid or missing name`);
+    }
+    if (!Number.isInteger(student.age) || student.age <= 0) {
+      throw new Error(`Student at index ${index} has invalid age`);
+    }
+    if (!student.grade || typeof student.grade !== 'string') {
+      throw new Error(`Student at index ${index} has invalid or missing grade`);
+    }
+  });
 }
 
-// Function to insert a student
-function insertStudent(student) {
+// Insert multiple students using prepared statements
+function insertStudents(students) {
   try {
-    // Validate input
-    validateStudent(student);
+    validateStudents(students);
 
-    // Get connection from pool and insert data
     pool.getConnection((err, connection) => {
       if (err) {
-        console.error('Error getting DB connection:', err);
+        console.error('DB connection error:', err);
         return;
       }
 
-      const sql = 'INSERT INTO students SET ?';
-      connection.query(sql, student, (err, results) => {
-        // Release the connection back to pool
+      const sql = 'INSERT INTO students (name, age, grade) VALUES ?';
+      const values = students.map(s => [s.name, s.age, s.grade]);
+
+      connection.query(sql, [values], (err, result) => {
         connection.release();
 
         if (err) {
-          console.error('Error executing query:', err);
+          console.error('Error inserting students:', err);
           return;
         }
 
-        console.log('Student inserted successfully with ID:', results.insertId);
+        console.log(`${result.affectedRows} students inserted successfully.`);
       });
     });
 
   } catch (error) {
-    console.error('Validation or setup error:', error.message);
+    console.error('Validation error:', error.message);
   }
 }
 
-// Sample data
-const student = {
-  name: 'Ananyashree K G',
-  age: 20,
-  grade: 'A'
-};
+// Example students array
+const students = [
+  { name: 'Alice', age: 21, grade: 'A' },
+  { name: 'Bob', age: 22, grade: 'B' },
+  { name: 'Charlie', age: 20, grade: 'C' },
+  { name: 'Diana', age: 19, grade: 'B' },
+  { name: 'Ethan', age: 23, grade: 'A' }
+];
 
-// Run insert
-insertStudent(student);
+// Run the insertion
+insertStudents(students);
+
+// Optional: Export for testing
+module.exports = { insertStudents, validateStudents };
