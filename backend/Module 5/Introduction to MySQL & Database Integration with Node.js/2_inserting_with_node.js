@@ -63,7 +63,7 @@ function insertStudents(students) {
 const students = [
   { name: 'Alice', age: 21, grade: 'A' },
   { name: 'Bob', age: 22, grade: 'B' },
-  { name: 'Charlie', age: 20, grade: 'C' },
+  { name: 'Charlie', age: 20, grade: 'A' },
   { name: 'Diana', age: 19, grade: 'B' },
   { name: 'Ethan', age: 23, grade: 'A' }
 ];
